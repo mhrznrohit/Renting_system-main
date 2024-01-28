@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-4 my-4 mx-auto d-flex flex-column">
+    {% if d %}
+    <div class="header">
+        <div class="row r1">
+            <div class="col-md-9 abc">
+                <h1><b>{{d.title}}</b></h1>
+                <hr>
+            </div>
+            <div class="col-md-3 text-right pqr"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+        </div>
+    </div>
+    <div class="container-body mt-4">
+        <div class="row r3">
+            <div class="col-md-5 p-0 klo">
+                <ul>
+                    <li>{{d.description}}</li>
+                    <li>Bedrooms:{{d.bedroom}}</li>
+                    <li>Living Room: {{d.livingroom}}</li>
+                    <li>Bathroom: {{d.bathroom}}</li>
+                    <li>Kitchen: {{d.kitchen}}</li>
+                    <hr>
+                    <li>Contact Number: {{d.contact_number}}</li>
+                    <li>Location: {{d.location}}</li>
+                </ul>
+                <h4>Posted By:{{d.uid}}</h4>
+            </div>
+            <div class="col-md-7"> <img src={{d.images.url}} height="400" width="auto"/>  </div>
+        </div>
+    </div>
+    <div class="footer d-flex flex-column mt-5">
+        <div class="row r4">
+            <div class="col-md-2  ">{% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="flat-id" id="flat-id" value="{{d.id}}"/>
+                    <input type="submit" value="Book now" class="btn btn-dark"/>
+                </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-dark">BOOK NOW</a>
+                       
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if message %}
+        <div class="toast show msg align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+           <h4> Already Booked</h4>
+
+        </div>
+    {% endif %}
+</div>
+
+
+
+      <!-- Topic Cards -->
+      <div id="cards_landscape_wrap-2">
+        <div class="container">
+            <div class="row">
+            {% if o %}
+            {% for ad in o  %}
+                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <a href="{% url 'flats' ad.slugs ad.id%}">
+                        <div class="card-flyer">
+                            <div class="text-box">
+                                <div class="image-box">
+                                    <img src={{ad.images.url}} alt="" />
+                                </div>
+                                <div class="text-container">
+                                    <h6>{{ad.title}}</h6>
+                                    {% comment %} <p>{{ad.description}}</p> {% endcomment %}
+                                    <a href="{% url 'flats' ad.slugs ad.id%}" class="btn btn-dark">view</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+<!--card end-->
+{% endblock %}

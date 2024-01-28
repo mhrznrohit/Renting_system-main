@@ -1,0 +1,218 @@
+{% extends 'layout.html' %}
+{% load static%}
+{% block content %}
+<!-- start home -->
+
+
+<div class="container">
+  <br>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+
+      {% if first %}
+
+      <div class="item active">
+        <img src={{first.images.url}} />
+        <div class="carousel-caption">
+          <h3>{{first.title}}</h3>
+          <p>{{first.description}}</p>
+        </div>
+      </div>
+      {% endif %}
+      {% if latest %}
+
+      {% for l in latest %}
+      <div class="item ">
+        <img src={{l.images.url}} />
+        <div class="carousel-caption">
+          <h3>{{l.title}}</h3>
+          <p>{{l.description}}</p>
+        </div>
+      </div>{% endfor %}
+      {% endif %}
+
+
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- end home -->
+<br>
+<!-- search bar starts -->
+
+<div class="container">
+<div class="row  ">
+
+  <div class="col-12 col-md-10">
+
+    <div class="search">
+      <i class="fa fa-search"></i>
+      <form method= POST action="{%url 'search-flat'%}" >
+        {% csrf_token %}
+      <input type="text" class="form-control" placeholder="Search For Rooms" name="search">
+      <button class="btn  btn-outline-secondary">Search</button>
+      </form>
+
+    </div>
+  </div>
+  <!-- Filter starts -->
+  <div class="col-12 col-md-2" style="margin: inherit;" >
+  <button type="button" class="btn  btn-dark " data-toggle="modal"
+    data-target="#filterModal" style="padding: 18px 40px 18px 40px;" > Filter now </button>
+  <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span
+              aria-hidden="true">&times;</span> </button> </div>
+        <div class="modal-body row">
+          <div class="mx-auto col-10 col-md-8 col-lg-6">
+
+            <form method="POST" action="{%url 'filter-flat'%}">
+              {% csrf_token %}
+              
+              <div class="form-outline form-white mb-4">
+                <label for="priceMin">Price Range (Min):</label>
+                <input type="number" id="priceMin" name="priceMin" placeholder="Minimum Price">
+              </div>
+              <div class="form-outline form-white mb-4">
+                <label for="priceMax">Price Range (Max):</label>
+                <input type="number" id="priceMax" name="priceMax" placeholder="Maximum Price">
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <button class="btn btn-primary" type="submit">Filter</button>
+              </div>
+
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!-- Filter ends -->
+</div>
+<!-- search bar ends -->
+
+
+ 
+
+
+
+<!--card start-->
+<!-- Topic Cards -->
+<br>
+{% if ads %}
+{% for ad in flats %}
+<div class="container">
+
+  <div class="card">
+
+    <div class="row">
+
+      <div class="col-sm-4">
+        <a href="{% url 'flats' ad.slugs ad.id%}"> <img src="{{ad.images.url}}" alt="" style="width: 300px;"> </a>
+      </div>
+      <div class="image-box col-sm-6">
+        <div class="card-block">
+          <!--           <h4 class="card-title">Small card</h4> -->
+          <h4><b>{{ad.title}}</b></h4>
+          <p>{{ad.description}}</p>
+          <p>Location: {{ad.location}}</p>
+          <p>Rs. {{ad.price}}</p>
+
+          <a href="{% url 'flats' ad.slugs ad.id%}" class="btn btn-dark btn-sm float-right"
+            style="padding:10px ;">View More</a>
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <br>
+
+</div>
+
+</div>
+{% endfor %}
+
+{% endif %}
+
+<!--card end-->
+<!--Paginatiom start-->
+<div class="container" >
+  <center>
+{%if flats.has_previous %}
+  <a href="?page=1" class="btn btn-dark btn-sm float-right">First</a>
+  <a href='?page={{flats.previous_page_number}}' class="btn btn-dark btn-sm float-right">&#8249;</a> 
+{%endif %}
+
+Page {{ flats.number }} of {{ flats.paginator.num_pages }}
+
+{%if flats.has_next %}
+  <a href="?page={{flats.next_page_number}}"class="btn btn-dark btn-sm float-right">&#8250;</a>
+  <a href="?page={{flats.paginator.num_pages}}"class="btn btn-dark btn-sm float-right">Last</a>
+{%endif %}
+</center>
+</div>
+<!--Paginatiom end-->
+<!-- start service -->
+<section id="service">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="wow bounceIn" data-wow-offset="50" data-wow-delay="0.3s">OUR <span>SERVICES</span> </h2>
+      </div>
+      <div class="col-md-4 wow fadeIn" data-wow-offset="50" data-wow-delay="0.6s">
+        <i class="fa fa-laptop"></i>
+        <h4>House Rent</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut
+          nisi id leo molestie. Adipiscing vitae vel quam proin eget mauris eget. Lorem ipsum dolor sit amet,
+          consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut nisi id leo molestie.</p>
+      </div>
+      <div class="col-md-4 active wow fadeIn" data-wow-offset="50" data-wow-delay="0.9s">
+        <i class="fa fa-cloud"></i>
+        <h4>Post Ads</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut
+          nisi id leo molestie. Adipiscing vitae vel quam proin eget mauris eget. Lorem ipsum dolor sit amet,
+          consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut nisi id leo molestie.</p>
+      </div>
+      <div class="col-md-4 wow fadeIn" data-wow-offset="50" data-wow-delay="0.6s">
+        <i class="fa fa-cog"></i>
+        <h4>Lorem ipsum dolor</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut
+          nisi id leo molestie. Adipiscing vitae vel quam proin eget mauris eget. Lorem ipsum dolor sit amet,
+          consectetur adipiscing elitquisque tempus ac eget diam et laoreet phasellus ut nisi id leo molestie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end servie -->
+{% endblock %}

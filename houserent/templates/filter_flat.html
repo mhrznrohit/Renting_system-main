@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% load static%}
+{% block content %}
+
+<div class="container">
+  <div class="row  ">
+  
+    <div class="col-12 col-md-12">
+  
+      <div class="filter">
+        <i class="fa fa-filter"></i>
+        <form method="POST" action="{% url 'filter-flat' %}">
+          {% csrf_token %}
+          <div class="form-outline form-white mb-4">
+            <label for="priceMin">Price Range (Min):</label>
+            <input type="number" id="priceMin" name="priceMin" placeholder="Minimum Price">
+          </div>
+          <div class="form-outline form-white mb-4">
+            <label for="priceMax">Price Range (Max):</label>
+            <input type="number" id="priceMax" name="priceMax" placeholder="Maximum Price">
+          </div>
+          <div class="form-outline form-white mb-4">
+            <button class="btn btn-primary" type="submit">Filter</button>
+          </div>
+        </form>
+      </div>
+  
+    </div>
+
+    <center>
+        {% if flats %}
+            <h2>Filtered Flats</h2>
+            <br>
+            {% for flat in flats %}
+                <div class="container">
+  
+                  <div class="card">
+  
+                    <div class="row">
+  
+                      <div class="col-sm-4">
+                        <a href="{% url 'flats' flat.slugs flat.id %}"> <img src="{{ flat.images.url }}" alt="" style="width: 300px;"> </a>
+                      </div>
+                      <div class="image-box col-sm-6">
+                        <div class="card-block">
+                          <h4><b>{{ flat }}</b></h4>
+                          <p>Location: {{ flat.location }}</p>
+                          <p>Rs. {{ flat.price }}</p>
+  
+                          <a href="{% url 'flats' flat.slugs flat.id %}" class="btn btn-dark btn-sm float-right" style="padding:10px ;">View More</a>
+  
+                        </div>
+                      </div>
+  
+                    </div>
+  
+                  </div>
+                  <br>
+  
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2>No flats found.</h2>
+            <hr>
+        {% endif %}
+    </center>
+  
+  </div>
+</div>
+
+{% endblock %}

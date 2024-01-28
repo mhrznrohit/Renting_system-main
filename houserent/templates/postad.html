@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}           
+{% block content %}
+<div class="row mt-5">
+    <h2>Post a Ad</h2>
+</div>
+<div class="container">
+    <form action=""  method="post" enctype="multipart/form-data">
+    {% csrf_token %} 
+       <div class="row">
+           {% comment %} {% if user.is_authenticated is not True %}
+                <p class="text-muted h5 mt-3">Your Information</p>
+                <!-- Name -->
+                <div class="col-md-12">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="full_name" id="full_name"  placeholder="Enter your full name." required>
+                </div>
+
+                <!-- email address -->
+                <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="abc@xyz.com" id="email">
+                </div>
+
+
+            {% else %} {% endcomment %}
+                <input type="hidden" name="full_name" value=''>
+                <input type="hidden" name="address">
+                <input type="hidden" value="0" name="mobile_number" value=''>
+                <input type="hidden" name="email" value=''>
+            {% comment %} {% endif %}        {% endcomment %}
+            {% comment %} <hr class="bg-success border-2 border-top border-success mt-5">   {% endcomment %}
+            <p class="text-muted h5">Provide Information for Ad</p>
+
+            <!-- donation title -->
+            <div class="col-md-12">
+                <label for="ad_title">Title</label>
+                <input type="text" class="form-control" name="ad_title" placeholder="Title" id="donation_title" required>
+            </div>
+
+
+            <!-- Descriptions -->
+            <div class="col-md-12 mt-4 mb-4">
+                <label for="description" >Description</label>
+                <textarea class="form-control" placeholder="Description of Flat" name="description" id="description" style="height: 100px" maxlength='499' required></textarea>
+            </div>
+            <!-- mobile number -->
+            <div class="col-md-6">
+                <label for="contact_number" class="form-label">Mobile</label>
+                <input type="tel" name="contact_number" class="form-control" placeholder="Enter 10 digit mobile number." pattern="[0-9]{10}" id="contact_number"  required>
+            </div>
+
+            <!-- address -->
+            <div class="col-md-6">
+                <label for="location" class='form-label'>Location</label>
+                <input type="text" class="form-control" name="location" placeholder="Enter your address." id="location"   required>
+            </div>
+            <!--bhk-->
+            <div class="col-md-3 mt-4">
+                <label for="bedroom" class='form-label'>Bedroom</label>
+                <input type="number" class="form-control" name="bedroom" placeholder="Enter available Bedroom" id="bedroom"pattern="[0-9]{1}" min="0" required>
+            </div>
+
+            <div class="col-md-3 mt-4">
+                <label for="kitchen" class='form-label'>kitchen</label>
+                <input type="number" class="form-control" name="kitchen" placeholder="Enter available kitchen" id="kitchen" pattern="[0-9]{1}" min="0" required>
+            </div>
+
+            <div class="col-md-3 mt-4">
+                <label for="bathroom" class='form-label'>Bathroom</label>
+                <input type="number" class="form-control" name="bathroom" placeholder="Enter number of Bathroom" id="bathroom" pattern="[0-9]{1}" min="0" required>
+            </div>
+
+            <div class="col-md-3 mt-4">
+                <label for="living_room" class='form-label'>Living Room</label>
+                <input type="number" class="form-control" name="living_room" placeholder="Enter number of Living Room." id="living_room" pattern="[0-9]{1}" min="0" required>
+            </div>
+
+
+
+            <!-- Rent amount -->
+            <div class="col-md-12">
+                <label for="rent" class="form-label">Price/Rent</label>
+                <input type="number" class="form-control" name="rent" id="rent"  placeholder="Amount" required>
+            </div>
+            
+            <!-- image -->
+
+            <div class="col-md-12">
+                <label for="flat_image" class="form-label">Upload Image</label>
+                <input type="file" name="flat_image" id="flat_image" class="form-control" required>
+            </div>
+
+
+
+            <div class="col-md-12">
+                <input type="submit" value="Submit" class="btn btn-dark mt-5 px-4 mb-4">
+            </div>
+       </div>
+    </form>
+</div>
+{% endblock %}
